@@ -156,6 +156,10 @@ public class Board {
 			System.out.println("+-------+-------+-------+-------+-------+-------+-------+-------+");
 		}
 	}
+
+	public Color getColorAt(int x, int y) {
+		return board[x][y].getColor();
+	}
 	
 	public void addStone(int x, int y, Color color) {
 		board[x][y].setColor(color);
