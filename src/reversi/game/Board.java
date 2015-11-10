@@ -34,6 +34,125 @@ public class Board {
 		flipNW(x, y, color);
 	}
 
+	private void flipNW(int x, int y, Color color) {
+		ArrayList<Stone> toFlip = new ArrayList<Stone>();
+		while(--x > 0 && --y > 0) {
+			if(board[x][y].getColor() == Color.None) {
+				return;
+			} else if(board[x][y].getColor() == color) {
+				for(Stone stone : toFlip) {
+					stone.doFlip();
+				}
+				return;
+			} else {
+				toFlip.add(board[x][y]);
+			}	
+		}
+		return;
+	}
+
+	private void flipW(int x, int y, Color color) {
+		ArrayList<Stone> toFlip = new ArrayList<Stone>();
+		while(--y > 0) {
+			if(board[x][y].getColor() == Color.None) {
+				return;
+			} else if(board[x][y].getColor() == color) {
+				for(Stone stone : toFlip) {
+					stone.doFlip();
+				}
+				return;
+			} else {
+				toFlip.add(board[x][y]);
+			}	
+		}
+		return;
+	}
+
+	private void flipSW(int x, int y, Color color) {
+		ArrayList<Stone> toFlip = new ArrayList<Stone>();
+		while(++x < 8 && --y > 0) {
+			if(board[x][y].getColor() == Color.None) {
+				return;
+			} else if(board[x][y].getColor() == color) {
+				for(Stone stone : toFlip) {
+					stone.doFlip();
+				}
+				return;
+			} else {
+				toFlip.add(board[x][y]);
+			}	
+		}
+		return;
+	}
+
+	private void flipS(int x, int y, Color color) {
+		ArrayList<Stone> toFlip = new ArrayList<Stone>();
+		while(++x < 8) {
+			if(board[x][y].getColor() == Color.None) {
+				return;
+			} else if(board[x][y].getColor() == color) {
+				for(Stone stone : toFlip) {
+					stone.doFlip();
+				}
+				return;
+			} else {
+				toFlip.add(board[x][y]);
+			}	
+		}
+		return;
+	}
+
+	private void flipSE(int x, int y, Color color) {
+		ArrayList<Stone> toFlip = new ArrayList<Stone>();
+		while(++x < 8 && ++y < 8) {
+			if(board[x][y].getColor() == Color.None) {
+				return;
+			} else if(board[x][y].getColor() == color) {
+				for(Stone stone : toFlip) {
+					stone.doFlip();
+				}
+				return;
+			} else {
+				toFlip.add(board[x][y]);
+			}	
+		}
+		return;
+	}
+
+	private void flipE(int x, int y, Color color) {
+		ArrayList<Stone> toFlip = new ArrayList<Stone>();
+		while(++y < 8) {
+			if(board[x][y].getColor() == Color.None) {
+				return;
+			} else if(board[x][y].getColor() == color) {
+				for(Stone stone : toFlip) {
+					stone.doFlip();
+				}
+				return;
+			} else {
+				toFlip.add(board[x][y]);
+			}	
+		}
+		return;
+	}
+
+	private void flipNE(int x, int y, Color color) {
+		ArrayList<Stone> toFlip = new ArrayList<Stone>();
+		while(--x > 0 && ++y < 8) {
+			if(board[x][y].getColor() == Color.None) {
+				return;
+			} else if(board[x][y].getColor() == color) {
+				for(Stone stone : toFlip) {
+					stone.doFlip();
+				}
+				return;
+			} else {
+				toFlip.add(board[x][y]);
+			}	
+		}
+		return;		
+	}
+
 	private void flipN(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(--x > 0) {
