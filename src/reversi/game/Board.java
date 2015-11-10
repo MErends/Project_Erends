@@ -18,6 +18,18 @@ public class Board {
 		board[4][4].setColor(Color.White);
 	}
 	
+	public void printBoard() {
+		System.out.println("\nBoard:\n+-------+-------+-------+-------+-------+-------+-------+-------+");
+		for(int x = 0; x != 8; ++x) {
+			System.out.println("|       |       |       |       |       |       |       |       |");
+			for(int y = 0; y != 8; ++y) {
+				System.out.print("| " + board[x][y].getColor() + "\t");
+			}
+			System.out.println("|\n|       |       |       |       |       |       |       |       |");
+			System.out.println("+-------+-------+-------+-------+-------+-------+-------+-------+");
+		}
+	}
+	
 	public void addStone(int x, int y, Color color) {
 		board[x][y].setColor(color);
 		flipAll(x, y, color);
