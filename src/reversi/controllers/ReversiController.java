@@ -28,17 +28,19 @@ public class ReversiController {
 		session.setAttribute("board", board);
 		session.setAttribute("ColorHasTurn", color);
 		int[][] potentialScore = new int[8][8];
-		for(int x = 0; x != 8; ++x) 
+/*		for(int x = 0; x != 8; ++x) 
 			for(int y = 0; y != 8; ++y) 
 				potentialScore[x][y] = board.potentialScoreFor(x, y, color);
-		
+	*/	
 		session.setAttribute("potential", potentialScore);
 		
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
+		em.persist( new Stone(Color.White) );
 		em.persist( new Stone(Color.Black) );
-		t.commit();
+		em.persist( new Stone(Color.None) );
+		//t.commit();
 		em.close();
 		return "showBoard";
 	}
