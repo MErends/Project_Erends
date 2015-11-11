@@ -1,20 +1,15 @@
 package reversi.controllers;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import reversi.game.*;
-
+import reversi.game.Board;
+import reversi.game.Color;
 @Controller
 public class ReversiController {
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
 
 	@RequestMapping("/")
 	public String index() {
@@ -22,26 +17,41 @@ public class ReversiController {
 	}
 
 	@RequestMapping("/newGame")
-	public String newGame(Model model, HttpSession session) {
+	public String newGame(HttpSession session) {
 		Board board = new Board();
-		Color color = Color.White;
+		Color color = Color.Black;
 		session.setAttribute("board", board);
-		session.setAttribute("ColorHasTurn", color);
-		int[][] potentialScore = new int[8][8];
-/*		for(int x = 0; x != 8; ++x) 
-			for(int y = 0; y != 8; ++y) 
-				potentialScore[x][y] = board.potentialScoreFor(x, y, color);
-	*/	
-		session.setAttribute("potential", potentialScore);
-		
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist( new Stone(Color.White) );
-		em.persist( new Stone(Color.Black) );
-		em.persist( new Stone(Color.None) );
-		//t.commit();
-		em.close();
+		session.setAttribute("turn", color);
+		return "redirect:/game";
+	}
+	
+	
+	
+	@RequestMapping("game")
+	public String makeFirstMove(HttpSession session, Model model) {
+		Board board = (Board) session.getAttribute("board");
+		Color turn = (Color) session.getAttribute("turn");
+		StringBuilder table = new StringBuilder();
+		table.append("<table>\n");
+		for (int x = 0; x != 8; ++x) {
+			table.append("\t<tr>\n");
+			for (int y = 0; y != 8; ++y) {
+				Color color = board.getColorAt(x, y);
+				if (color != Color.None) {
+					table.append("\t\t<td><img src=\"images/" + color + ".png\" /></td>\n");
+				} else if (board.potentialScoreFor(x, y, turn) == 0 ) {
+					table.append("\t\t<td><img src=\"images/None.png\" /></td>\n");
+				} else {
+					table.append("\t\t<td align=\"center\" style=\"background-image:url(images/None.png);background-repeat:no-repeat;\">\n");
+					table.append("\t\t\t<input type=\"radio\" name=\"placeID\" value=\""+ (x * 8 + y) + "\" />\n");
+					table.append("\t\t</td>\n");
+				}
+			}
+			table.append("\t</tr>\n");
+		}
+		table.append("</table>\n");
+		model.addAttribute("tableString", table.toString());
 		return "showBoard";
 	}
+	
 }
