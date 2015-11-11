@@ -2,8 +2,27 @@ package reversi.game;
 
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
 public class Board {
-	Stone[][] board;	
+	private long id;
+	
+	@OneToOne
+	private Stone[][] board;	
+	
+	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
+	public long getId() {
+		return id;
+	}
+	
 	
 	public Board() {
 		board = new Stone[8][8];
@@ -18,6 +37,19 @@ public class Board {
 		board[4][4].setColor(Color.White);
 	}
 	
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Stone[][] getBoard() {
+		return board;
+	}
+
+	public void setBoard(Stone[][] board) {
+		this.board = board;
+	}
+
 	public int potentialScoreFor(int x, int y, Color color) {
 		if(board[x][y].getColor() != Color.None)
 			return 0;

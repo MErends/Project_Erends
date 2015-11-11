@@ -1,8 +1,32 @@
 package reversi.game;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
 public class Stone {
-	Color color;
+	private long id;
 	
+	@Enumerated(EnumType.STRING)
+	private Color color;
+	
+	
+	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public Stone(Color color) {
 			this.color = color;
 	}
