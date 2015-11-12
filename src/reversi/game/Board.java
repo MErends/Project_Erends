@@ -27,6 +27,15 @@ public class Board {
 		}
 		return true;
 	}
+	
+	public int numStones(Color color) {
+		int num = 0;
+		for(Stone stone : stones)
+			num += stone.getColor() == color ? 1 : 0;
+		
+		return num;
+	}
+	
 	public boolean noMoreMoves() {
 		return (hasNoMoves(Color.Black) && hasNoMoves(Color.White));
 	}

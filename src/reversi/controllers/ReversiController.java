@@ -37,9 +37,6 @@ public class ReversiController {
 		turn = turn == Color.Black ? Color.White : Color.Black;
 		session.setAttribute("board", board);
 		session.setAttribute("turn", turn);
-		if (board.noMoreMoves()) {
-			return "redirect:/gameOver";
-		}
 		return "redirect:/game";
 	}
 	
@@ -48,7 +45,8 @@ public class ReversiController {
 		Board board = (Board) session.getAttribute("board");
 		Color turn = (Color) session.getAttribute("turn");
 		StringBuilder table = new StringBuilder();
-		String checked = "";//"checked";
+		//String checked = "";
+		String checked = "checked";
 		table.append("<table>\n");
 		for (int x = 0; x != 8; ++x) {
 			table.append("\t<tr>\n");
@@ -69,6 +67,28 @@ public class ReversiController {
 		}
 		table.append("</table>\n");
 		model.addAttribute("tableString", table.toString());
+		
+		if (board.hasNoMoves(turn)) {
+			turn = turn == Color.Black ? Color.White : Color.Black;
+			session.setAttribute("turn", turn);
+			model.addAttribute("skippable", true);
+		}
+		
+		if (board.noMoreMoves()) {
+			String message;
+			int blackScore = board.numStones(Color.Black);
+			int whiteScore = board.numStones(Color.White);
+			model.addAttribute("blackScore", blackScore);
+			model.addAttribute("whiteScore", whiteScore);
+			if (blackScore > whiteScore)
+				message = "Black has won the game!";
+			else if (blackScore < whiteScore)
+				message = "White has won the game!";
+			else
+				message = "It is a draw!!!";
+			model.addAttribute("message", message);
+			return "endGame";
+		}
 		return "showBoard";
 	}
 	
