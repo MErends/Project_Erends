@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import reversi.game.Board;
 import reversi.game.Color;
@@ -26,12 +27,28 @@ public class ReversiController {
 	}
 	
 	
+	@RequestMapping(value="/game", method=RequestMethod.POST)
+	public String makeMove(HttpSession session, int placeID) {
+		Board board = (Board) session.getAttribute("board");
+		Color turn = (Color) session.getAttribute("turn");
+		int x = placeID / 8;
+		int y = placeID % 8;
+		board.addStone(x, y, turn);
+		turn = turn == Color.Black ? Color.White : Color.Black;
+		session.setAttribute("board", board);
+		session.setAttribute("turn", turn);
+		if (board.noMoreMoves()) {
+			return "redirect:/gameOver";
+		}
+		return "redirect:/game";
+	}
 	
-	@RequestMapping("game")
-	public String makeFirstMove(HttpSession session, Model model) {
+	@RequestMapping("/game")
+	public String showGame(HttpSession session, Model model) {
 		Board board = (Board) session.getAttribute("board");
 		Color turn = (Color) session.getAttribute("turn");
 		StringBuilder table = new StringBuilder();
+		String checked = "checked";
 		table.append("<table>\n");
 		for (int x = 0; x != 8; ++x) {
 			table.append("\t<tr>\n");
@@ -43,8 +60,9 @@ public class ReversiController {
 					table.append("\t\t<td><img src=\"images/None.png\" /></td>\n");
 				} else {
 					table.append("\t\t<td align=\"center\" style=\"background-image:url(images/None.png);background-repeat:no-repeat;\">\n");
-					table.append("\t\t\t<input type=\"radio\" name=\"placeID\" value=\""+ (x * 8 + y) + "\" />\n");
+					table.append("\t\t\t<input type=\"radio\" name=\"placeID\" value=\""+ (x * 8 + y) + "\" " + checked + "/>\n");
 					table.append("\t\t</td>\n");
+					checked = "";
 				}
 			}
 			table.append("\t</tr>\n");

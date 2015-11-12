@@ -9,7 +9,8 @@
 <title>Current board</title>
 </head>
 <body>
-It is ${sessionScope.turn} turn.
+Next turn:
+	<img src="images/${sessionScope.turn}.png"/>
 <form:form>
 ${tableString}
 <input type="submit" />

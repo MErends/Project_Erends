@@ -18,6 +18,17 @@ public class Board {
 		stones.get(4 * 8 + 4).setColor(Color.White);
 	}
 
+	public boolean noMoreMoves() {
+		int blackMoves = 0, whiteMoves = 0;
+		for (int x = 0; x != 8; ++x) {
+			for (int y = 0; y != 8; ++y) {
+				blackMoves += this.potentialScoreFor(x, y, Color.Black);
+				whiteMoves += this.potentialScoreFor(x, y, Color.White);
+			}
+		}
+		return (blackMoves == 0 && whiteMoves == 0);
+	}
+	
 	public void addStone(int x, int y, Color color) {
 		stones.get(8 * x + y).setColor(color);
 		flipAll(x, y, color);
@@ -64,6 +75,7 @@ public class Board {
 			output = output.concat("|       |       |       |       |       |       |       |       |\n");
 			for(int y = 0; y != 8; ++y) {
 				output = output.concat("| " + stones.get(8 * x + y).getColor() + "\t");
+				//output = output.concat("|" + potentialScoreFor(x, y, Color.Black) + stones.get(8 * x + y).getColor() + "\t");
 			}
 			output = output.concat("|\n|       |       |       |       |       |       |       |       |\n");
 			output = output.concat("+-------+-------+-------+-------+-------+-------+-------+-------+\n");
@@ -101,7 +113,7 @@ public class Board {
 
 	private void flipN(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(--x > 0) {
+		while(--x > -1) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return;
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -118,7 +130,7 @@ public class Board {
 
 	private void flipNE(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(--x > 0 && ++y < 8) {
+		while(--x > -1 && ++y < 8) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return;
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -135,7 +147,7 @@ public class Board {
 	
 	private void flipNW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(--x > 0 && --y > 0) {
+		while(--x > -1 && --y > -1) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return;
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -186,7 +198,7 @@ public class Board {
 	}
 	private void flipSW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(++x < 8 && --y > 0) {
+		while(++x < 8 && --y > -1) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return;
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -202,7 +214,7 @@ public class Board {
 	}
 	private void flipW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(--y > 0) {
+		while(--y > -1) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return;
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -233,7 +245,7 @@ public class Board {
 
 	private ArrayList<Stone> potentialN(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(--x > 0) {
+		while(--x > -1) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return new ArrayList<Stone>();
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -247,7 +259,7 @@ public class Board {
 
 	private ArrayList<Stone> potentialNE(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(--x > 0 && ++y < 8) {
+		while(--x > -1 && ++y < 8) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return new ArrayList<Stone>();
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -261,7 +273,7 @@ public class Board {
 
 	private ArrayList<Stone> potentialNW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(--x > 0 && --y > 0) {
+		while(--x > -1 && --y > -1) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return new ArrayList<Stone>();
 			} else if(stones.get(8 * x + y).getColor() == color) {
@@ -303,7 +315,7 @@ public class Board {
 
 	private ArrayList<Stone> potentialSW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
-		while(++x < 8 && --y > 0) {
+		while(++x < 8 && --y > -1) {
 			if(stones.get(8 * x + y).getColor() == Color.None) {
 				return new ArrayList<Stone>();
 			} else if(stones.get(8 * x + y).getColor() == color) {
