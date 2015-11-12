@@ -48,7 +48,7 @@ public class ReversiController {
 		Board board = (Board) session.getAttribute("board");
 		Color turn = (Color) session.getAttribute("turn");
 		StringBuilder table = new StringBuilder();
-		String checked = "checked";
+		String checked = "";//"checked";
 		table.append("<table>\n");
 		for (int x = 0; x != 8; ++x) {
 			table.append("\t<tr>\n");
@@ -59,7 +59,7 @@ public class ReversiController {
 				} else if (board.potentialScoreFor(x, y, turn) == 0 ) {
 					table.append("\t\t<td><img src=\"images/None.png\" /></td>\n");
 				} else {
-					table.append("\t\t<td align=\"center\" style=\"background-image:url(images/None.png);background-repeat:no-repeat;\">\n");
+					table.append("\t\t<td height=\"44\" align=\"center\" style=\"background-image:url(images/None.png);background-repeat:no-repeat;\">\n");
 					table.append("\t\t\t<input type=\"radio\" name=\"placeID\" value=\""+ (x * 8 + y) + "\" " + checked + "/>\n");
 					table.append("\t\t</td>\n");
 					checked = "";

@@ -7,13 +7,21 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Current board</title>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('input:radio[name="placeID"]').click(function() {
+        $("#submit").removeAttr("disabled");
+    });
+});
+</script>
 </head>
 <body>
 Next turn:
 	<img src="images/${sessionScope.turn}.png"/>
 <form:form>
 ${tableString}
-<input type="submit" />
+<input type="submit" disabled="disabled" id="submit" />
 </form:form>
 </body>
 </html>

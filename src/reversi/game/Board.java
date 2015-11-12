@@ -18,15 +18,17 @@ public class Board {
 		stones.get(4 * 8 + 4).setColor(Color.White);
 	}
 
-	public boolean noMoreMoves() {
-		int blackMoves = 0, whiteMoves = 0;
+	public boolean hasNoMoves(Color color) {
 		for (int x = 0; x != 8; ++x) {
 			for (int y = 0; y != 8; ++y) {
-				blackMoves += this.potentialScoreFor(x, y, Color.Black);
-				whiteMoves += this.potentialScoreFor(x, y, Color.White);
+				if (potentialScoreFor(x, y, color) != 0)
+					return false;
 			}
 		}
-		return (blackMoves == 0 && whiteMoves == 0);
+		return true;
+	}
+	public boolean noMoreMoves() {
+		return (hasNoMoves(Color.Black) && hasNoMoves(Color.White));
 	}
 	
 	public void addStone(int x, int y, Color color) {
