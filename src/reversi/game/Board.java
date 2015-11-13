@@ -2,15 +2,9 @@ package reversi.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -42,7 +36,6 @@ public class Board {
 	}
 	
 	@Id
-	@Column(name="BOARD_ID")
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy = "increment")
 	public long getId() {
@@ -50,7 +43,6 @@ public class Board {
 	}
 	
 	@OneToMany(cascade = {CascadeType.ALL})
-	@JoinColumn(name="BOARD_ID")
 	public List<Stone> getStones() {
 		return stones;
 	}
@@ -63,7 +55,65 @@ public class Board {
 		return turn;
 	}
 
-	
+	public int bestMove(Color turn) {
+		int bestScore = 0;
+		List<Integer> positions = new ArrayList<Integer>();
+		for (int x = 0; x != 8; ++x) {
+			for (int y = 0; y != 8; ++y) {
+				int score = potentialScoreFor(x, y, turn);
+				if (score >= bestScore) {
+					if (score > bestScore)
+						positions = new ArrayList<Integer>();
+					positions.add(x * 8 + y);
+					bestScore = score;
+				}
+			}
+		}
+		List<Integer> corners = new ArrayList<Integer>();
+		List<Integer> subcorners = new ArrayList<Integer>();
+		List<Integer> rest = new ArrayList<Integer>();
+		for (Integer position : positions) {
+			switch (position) {
+			case 0:
+			case 7:
+			case 56:
+			case 63:
+				corners.add(position);
+				break;
+			case 1:
+			case 6:
+			case 8:
+			case 9:
+			case 14:
+			case 15:
+			case 48:
+			case 49:
+			case 54:
+			case 55:
+			case 57:
+			case 62:
+				subcorners.add(position);
+				break;
+			default:
+				rest.add(position);
+				break;
+			}
+		}
+		Random random = new Random();
+		if (corners.size() != 0) {
+			int index = random.nextInt(corners.size());
+			int move = corners.get(index);
+			return move;
+		}
+		if (rest.size() != 0) {
+			int index = random.nextInt(rest.size());
+			int move = rest.get(index);
+			return move;
+		}
+		int index = random.nextInt(subcorners.size());
+		int move = subcorners.get(index);
+		return move;
+	}
 
 	public boolean hasNoMoves(Color color) {
 		for (int x = 0; x != 8; ++x) {
@@ -127,7 +177,7 @@ public class Board {
 			output = output.concat("|       |       |       |       |       |       |       |       |\n");
 			for(int y = 0; y != 8; ++y) {
 				//output = output.concat("| " + stones.get(8 * x + y).getColor() + "\t");
-				output = output.concat("|" + potentialScoreFor(x, y, Color.Black) + stones.get(8 * x + y).getColor() + "\t");
+				output = output.concat("|" + (8 * x + y) + "\t");
 			}
 			output = output.concat("|\n|       |       |       |       |       |       |       |       |\n");
 			output = output.concat("+-------+-------+-------+-------+-------+-------+-------+-------+\n");

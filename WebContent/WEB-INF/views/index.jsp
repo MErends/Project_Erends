@@ -5,6 +5,6 @@
 <title>Welcome to Reversi!</title>
 </head>
 <body>
-This is the Reversi Homepage. Here you will be able to start a <a href="/Reversi/newGame">new game!</a>
+This is the Reversi Homepage. Here you will be able to start a <a href="/Reversi/newGame">new game!</a> or play versus the <a href="/Reversi/newGame?CPU=true">Computer!</a>
 </body>
 </html>
