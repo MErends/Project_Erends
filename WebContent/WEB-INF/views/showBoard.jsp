@@ -18,13 +18,13 @@ $(document).ready(function(){
 </head>
 <body>
 Next turn:
-	<img src="images/${sessionScope.turn}.png"/>
+	<img src="images/${sessionScope.board.getTurn()}.png"/>
 <form:form>
 ${tableString}
 <%-- <input type="submit" disabled="disabled" id="submit" value="Make Move" /> --%>
-<input type="submit" id="submit" value="Make Move" />
+<input type="submit" id="submit" value="Make Move" name="makeMove"/>
 <c:if test="${skippable}">
-	<input type="submit" value="Skip Turn" />
+	<input type="submit" value="Skip Turn" name="skipTurn" />
 </c:if>
 </form:form>
 </body>

@@ -1,5 +1,9 @@
 package reversi.controllers;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -9,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import reversi.game.Board;
 import reversi.game.Color;
+
 @Controller
 public class ReversiController {
 
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
+	
 	@RequestMapping("/")
 	public String index() {
 		return "index";
@@ -20,30 +27,46 @@ public class ReversiController {
 	@RequestMapping("/newGame")
 	public String newGame(HttpSession session) {
 		Board board = new Board();
-		Color color = Color.Black;
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		em.persist( board );
+		t.commit();
+		em.close();
 		session.setAttribute("board", board);
-		session.setAttribute("turn", color);
 		return "redirect:/game";
 	}
-	
+	 
 	
 	@RequestMapping(value="/game", method=RequestMethod.POST)
-	public String makeMove(HttpSession session, int placeID) {
+	public String makeMove(HttpSession session, Integer placeID, String skipTurn) {
+
 		Board board = (Board) session.getAttribute("board");
-		Color turn = (Color) session.getAttribute("turn");
+		System.out.println(skipTurn);
+		if (skipTurn != null) {
+			board.switchTurn();
+			session.setAttribute("board", board);
+			return "redirect:/game";
+		}
+		if (placeID == null)
+			return "redirect:/game";
+			
+		Color turn = board.getTurn();
 		int x = placeID / 8;
 		int y = placeID % 8;
 		board.addStone(x, y, turn);
-		turn = turn == Color.Black ? Color.White : Color.Black;
+		board.switchTurn();
 		session.setAttribute("board", board);
-		session.setAttribute("turn", turn);
 		return "redirect:/game";
 	}
 	
 	@RequestMapping("/game")
 	public String showGame(HttpSession session, Model model) {
 		Board board = (Board) session.getAttribute("board");
-		Color turn = (Color) session.getAttribute("turn");
+		if (board == null)
+			return "index";
+	
+		Color turn = board.getTurn();
 		StringBuilder table = new StringBuilder();
 		//String checked = "";
 		String checked = "checked";
@@ -69,8 +92,6 @@ public class ReversiController {
 		model.addAttribute("tableString", table.toString());
 		
 		if (board.hasNoMoves(turn)) {
-			turn = turn == Color.Black ? Color.White : Color.Black;
-			session.setAttribute("turn", turn);
 			model.addAttribute("skippable", true);
 		}
 		

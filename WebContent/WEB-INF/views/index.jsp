@@ -5,6 +5,6 @@
 <title>Welcome to Reversi!</title>
 </head>
 <body>
-This is the Reversi Homepage. Here you will be able to start a new game!
+This is the Reversi Homepage. Here you will be able to start a <a href="/Reversi/newGame">new game!</a>
 </body>
 </html>

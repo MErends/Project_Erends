@@ -3,10 +3,23 @@ package reversi.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
 public class Board {
 	
 	private long id;
 	private List<Stone> stones = new ArrayList<Stone>();
+	private Color turn;
 	
 	public Board() {
 		for (int x = 0; x != 64; ++x)
@@ -16,7 +29,41 @@ public class Board {
 		stones.get(3 * 8 + 4).setColor(Color.Black);
 		stones.get(3 * 8 + 3).setColor(Color.White);
 		stones.get(4 * 8 + 4).setColor(Color.White);
+		turn = Color.Black;
 	}
+
+	public void addStone(int x, int y, Color color) {
+		stones.get(8 * x + y).setColor(color);
+		flipAll(x, y, color);
+	}
+	
+	public Color getColorAt(int x, int y) {
+		return stones.get(8 * x + y).getColor();
+	}
+	
+	@Id
+	@Column(name="BOARD_ID")
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
+	public long getId() {
+		return id;
+	}
+	
+	@OneToMany(cascade = {CascadeType.ALL})
+	@JoinColumn(name="BOARD_ID")
+	public List<Stone> getStones() {
+		return stones;
+	}
+	
+	public void switchTurn() {
+		turn = turn == Color.Black ? Color.White : Color.Black; 
+	}
+
+	public Color getTurn() {
+		return turn;
+	}
+
+	
 
 	public boolean hasNoMoves(Color color) {
 		for (int x = 0; x != 8; ++x) {
@@ -27,32 +74,17 @@ public class Board {
 		}
 		return true;
 	}
-	
+
+	public boolean noMoreMoves() {
+		return (hasNoMoves(Color.Black) && hasNoMoves(Color.White));
+	}
+
 	public int numStones(Color color) {
 		int num = 0;
 		for(Stone stone : stones)
 			num += stone.getColor() == color ? 1 : 0;
 		
 		return num;
-	}
-	
-	public boolean noMoreMoves() {
-		return (hasNoMoves(Color.Black) && hasNoMoves(Color.White));
-	}
-	
-	public void addStone(int x, int y, Color color) {
-		stones.get(8 * x + y).setColor(color);
-		flipAll(x, y, color);
-	}
-	
-
-	public Color getColorAt(int x, int y) {
-		return stones.get(8 * x + y).getColor();
-	}
-
-
-	public long getId() {
-		return id;
 	}
 
 	public int potentialScoreFor(int x, int y, Color color) {
@@ -79,21 +111,30 @@ public class Board {
 		stones.get(8 * x + y).setColor(color);
 	}
 
+	
+	public void setStones(List<Stone> stones) {
+		this.stones = stones;
+	}
+
+	public void setTurn(Color turn) {
+		this.turn = turn;
+	}
+
 	@Override
 	public String toString() {
 		String output = "\nBoard:\n+-------+-------+-------+-------+-------+-------+-------+-------+\n";
 		for(int x = 0; x != 8; ++x) {
 			output = output.concat("|       |       |       |       |       |       |       |       |\n");
 			for(int y = 0; y != 8; ++y) {
-				output = output.concat("| " + stones.get(8 * x + y).getColor() + "\t");
-				//output = output.concat("|" + potentialScoreFor(x, y, Color.Black) + stones.get(8 * x + y).getColor() + "\t");
+				//output = output.concat("| " + stones.get(8 * x + y).getColor() + "\t");
+				output = output.concat("|" + potentialScoreFor(x, y, Color.Black) + stones.get(8 * x + y).getColor() + "\t");
 			}
 			output = output.concat("|\n|       |       |       |       |       |       |       |       |\n");
 			output = output.concat("+-------+-------+-------+-------+-------+-------+-------+-------+\n");
 		}
 		return output;
 	}
-
+	
 	private void flipAll(int x, int y, Color color) {
 		flipN(x, y, color);
 		flipNE(x, y, color);
@@ -104,6 +145,7 @@ public class Board {
 		flipW(x, y, color);
 		flipNW(x, y, color);
 	}
+
 
 	private void flipE(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
@@ -121,7 +163,7 @@ public class Board {
 		}
 		return;
 	}
-
+	
 	private void flipN(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(--x > -1) {
@@ -138,7 +180,6 @@ public class Board {
 		}
 		return;
 	}
-
 	private void flipNE(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(--x > -1 && ++y < 8) {
@@ -155,7 +196,6 @@ public class Board {
 		}
 		return;		
 	}
-	
 	private void flipNW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(--x > -1 && --y > -1) {
@@ -173,7 +213,6 @@ public class Board {
 		return;
 	}
 
-
 	private void flipS(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(++x < 8) {
@@ -190,7 +229,7 @@ public class Board {
 		}
 		return;
 	}
-	
+
 	private void flipSE(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(++x < 8 && ++y < 8) {
@@ -207,6 +246,7 @@ public class Board {
 		}
 		return;
 	}
+
 	private void flipSW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(++x < 8 && --y > -1) {
@@ -223,6 +263,7 @@ public class Board {
 		}
 		return;
 	}
+
 	private void flipW(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(--y > -1) {
