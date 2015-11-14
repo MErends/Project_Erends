@@ -17,7 +17,7 @@ import reversi.game.Color;
 @Controller
 public class ReversiController {
 
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
+	//private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
 
 	@RequestMapping("/")
 	public String index() {
@@ -27,12 +27,12 @@ public class ReversiController {
 	@RequestMapping("/newGame")
 	public String newGame(HttpSession session, Boolean CPU) {
 		Board board = new Board();
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist( board );
-		t.commit();
-		em.close();
+//		EntityManager em = emf.createEntityManager();
+//		EntityTransaction t = em.getTransaction();
+//		t.begin();
+//		em.persist( board );
+//		t.commit();
+//		em.close();
 		session.setAttribute("CPU", (CPU != null && CPU));
 		session.setAttribute("board", board);
 		return "redirect:/game";

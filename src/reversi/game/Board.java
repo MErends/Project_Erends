@@ -56,65 +56,64 @@ public class Board {
 	}
 
 	public int bestMove(Color turn) {
+		System.out.println("best move requested\n");
+		int[] corners = {0, 7, 56, 63};
+		int[] subcorners = {1, 6, 8, 9, 14, 15, 48, 49, 54, 55, 57, 62};
 		int bestScore = 0;
-		List<Integer> positions = new ArrayList<Integer>();
+		List<Integer> moves = new ArrayList<Integer>();
+		List<Integer> cornerMoves = new ArrayList<Integer>();
+		List<Integer> subcornerMoves = new ArrayList<Integer>();
+		
 		for (int x = 0; x != 8; ++x) {
 			for (int y = 0; y != 8; ++y) {
 				int score = potentialScoreFor(x, y, turn);
+				if (score == 0) continue;
+				int position = 8 * x + y;
+				if (hasArrayGot(corners, position)) {
+					cornerMoves.add(position);
+					continue;
+				}
+				if (hasArrayGot(subcorners, position)) {
+					subcornerMoves.add(position);
+					continue;
+				}
+				
 				if (score >= bestScore) {
 					if (score > bestScore)
-						positions = new ArrayList<Integer>();
-					positions.add(x * 8 + y);
+						moves = new ArrayList<Integer>();
+					moves.add(position);
 					bestScore = score;
 				}
 			}
 		}
-		List<Integer> corners = new ArrayList<Integer>();
-		List<Integer> subcorners = new ArrayList<Integer>();
-		List<Integer> rest = new ArrayList<Integer>();
-		for (Integer position : positions) {
-			switch (position) {
-			case 0:
-			case 7:
-			case 56:
-			case 63:
-				corners.add(position);
-				break;
-			case 1:
-			case 6:
-			case 8:
-			case 9:
-			case 14:
-			case 15:
-			case 48:
-			case 49:
-			case 54:
-			case 55:
-			case 57:
-			case 62:
-				subcorners.add(position);
-				break;
-			default:
-				rest.add(position);
-				break;
-			}
-		}
 		Random random = new Random();
-		if (corners.size() != 0) {
-			int index = random.nextInt(corners.size());
-			int move = corners.get(index);
+		if (cornerMoves.size() != 0) {
+			int index = random.nextInt(cornerMoves.size());
+			int move = cornerMoves.get(index);
+			System.out.println("returning corner move " + move);
 			return move;
 		}
-		if (rest.size() != 0) {
-			int index = random.nextInt(rest.size());
-			int move = rest.get(index);
+		if (moves.size() != 0) {
+			int index = random.nextInt(moves.size());
+			int move = moves.get(index);
+			System.out.println("returning move " + move);
 			return move;
 		}
-		int index = random.nextInt(subcorners.size());
-		int move = subcorners.get(index);
+		int index = random.nextInt(subcornerMoves.size());
+		int move = subcornerMoves.get(index);
+		System.out.println("returning subcorner move " + move);
 		return move;
 	}
 
+	private boolean hasArrayGot(int[] arr, int value) {
+		int len = arr.length;
+		for (int x = 0; x != len; ++x) {
+			if (arr[x] == value)
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean hasNoMoves(Color color) {
 		for (int x = 0; x != 8; ++x) {
 			for (int y = 0; y != 8; ++y) {
