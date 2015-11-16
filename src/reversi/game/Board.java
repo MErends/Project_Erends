@@ -56,7 +56,6 @@ public class Board {
 	}
 
 	public int bestMove(Color turn) {
-		System.out.println("best move requested\n");
 		int[] corners = {0, 7, 56, 63};
 		int[] topleft = {1, 8, 9};
 		int[] topright = {6, 14, 15};

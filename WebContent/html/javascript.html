@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+
+
+<button id="clickMe">Click me!</button>
+
+<script>
+window.onload = function() {
+	var myButton = document.getElementById("clickMe");
+	myButton.style.position = "absolute";
+	myButton.onclick = function() {
+		myButton.style.left = "100px";
+	}
+}
+</script>
+</body>
+</html>

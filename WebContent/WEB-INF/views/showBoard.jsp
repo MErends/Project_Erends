@@ -9,26 +9,22 @@
 <title>Current board</title>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
-$(document).ready(function(){
-    $('input:radio[name="placeID"]').click(function() {
-        $("#submit").removeAttr("disabled");
-    });
+$(document).ready(function() {
+	$('td.clickable').click(function() {
+		var id = this.getAttribute("id");
+		$('img.clickable').attr("src", "images/None.png");
+		$('img[id='+ id + ']').attr("src", "images/Click.png");
+		$('#submit').prop("disabled", false);
+	});
 });
 </script>
-<style>
-    input[type=radio] {
-	 border: 0px;
-   	 width: 100%;
-   	 height: 2em;
-	}
-</style>
-</head>
-
 <body>
 Next turn:
 	<img src="images/${sessionScope.board.getTurn()}.png"/>
-<form:form>
+
 ${tableString}
+<form:form>
+<input type="hidden" name="placeID" value="">
 <c:choose>
 	<c:when test="${CPU}">
 	<input type="submit" id="submit" value="Make Move" name="makeMove">

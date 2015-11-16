@@ -1,9 +1,6 @@
 package reversi.controllers;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -17,7 +14,7 @@ import reversi.game.Color;
 @Controller
 public class ReversiController {
 
-	//private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
 
 	@RequestMapping("/")
 	public String index() {
@@ -27,12 +24,12 @@ public class ReversiController {
 	@RequestMapping("/newGame")
 	public String newGame(HttpSession session, Boolean CPU) {
 		Board board = new Board();
-//		EntityManager em = emf.createEntityManager();
+		EntityManager em = emf.createEntityManager();
 //		EntityTransaction t = em.getTransaction();
 //		t.begin();
 //		em.persist( board );
 //		t.commit();
-//		em.close();
+		em.close();
 		session.setAttribute("CPU", (CPU != null && CPU));
 		session.setAttribute("board", board);
 		return "redirect:/game";
@@ -69,7 +66,7 @@ public class ReversiController {
 			return "index";
 
 		Color turn = board.getTurn();
-		int bestMove = board.bestMove(turn);
+		// int bestMove = board.bestMove(turn);
 		StringBuilder table = new StringBuilder();
 		boolean CPU = (boolean) session.getAttribute("CPU");
 		boolean CPUTurn = CPU && turn == Color.White;
@@ -85,11 +82,10 @@ public class ReversiController {
 				} else if (board.potentialScoreFor(x, y, turn) == 0 ) {
 					table.append("\t\t<td><img src=\"images/None.png\" ></td>\n");
 				} else {
-					table.append("\t\t<td height=\"44\" align=\"center\" style=\"background-image:url(images/None.png);background-repeat:no-repeat;\">\n");
+					table.append("\t\t<td id=\""+ (x * 8 + y) + "\" height=\"44\" class=\"clickable\"><img id=\""+ (x * 8 + y) + "\" src=\"images/None.png\" class=\"clickable\"></td>\n");
 					
-					String checkdis = CPUTurn ? (bestMove == 8 * x + y ? "checked" : "disabled") : ""; 
-					table.append("\t\t\t<input type=\"radio\" name=\"placeID\" value=\""+ (x * 8 + y) + "\" " + checkdis + ">\n");
-					table.append("\t\t</td>\n");
+					//String checkdis = CPUTurn ? (bestMove == 8 * x + y ? "checked" : "disabled") : ""; 
+					//table.append("\t\t\t<input type=\"radio\" name=\"placeID\" value=\""+ (x * 8 + y) + "\" " + checkdis + ">\n");
 				}
 			}
 			table.append("\t</tr>\n");
