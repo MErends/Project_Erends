@@ -41,3 +41,11 @@ public class MultiController {
 		return "redirect:/multiplayer/";
 	}
 }
+//private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
+
+//EntityManager em = emf.createEntityManager();
+//EntityTransaction t = em.getTransaction();
+//t.begin();
+//em.persist( board );
+//t.commit();
+//em.close();

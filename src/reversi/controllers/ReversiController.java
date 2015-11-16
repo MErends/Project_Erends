@@ -1,6 +1,5 @@
 package reversi.controllers;
 
-import javax.persistence.*;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -12,24 +11,18 @@ import reversi.game.Board;
 import reversi.game.Color;
 
 @Controller
-public class ReversiController {
-
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
+public class ReversiController{
 
 	@RequestMapping("/")
 	public String index() {
 		return "index";
 	}
 
+
 	@RequestMapping("/newGame")
 	public String newGame(HttpSession session, Boolean CPU) {
 		Board board = new Board();
-		EntityManager em = emf.createEntityManager();
-//		EntityTransaction t = em.getTransaction();
-//		t.begin();
-//		em.persist( board );
-//		t.commit();
-		em.close();
+
 		session.setAttribute("CPU", (CPU != null && CPU));
 		session.setAttribute("board", board);
 		return "redirect:/game";
