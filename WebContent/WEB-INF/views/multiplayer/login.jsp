@@ -8,14 +8,15 @@
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
 $(document).ready(function(){
+	$
 	$('input.name')
 		.focus(function() {
-			if ($(this).attr("value") == "Enter your name")
-				$(this).attr("value", "");
+			if ($(this).val() == "Enter your name")
+				$(this).val("");
 		})
 		.blur(function() {
-			if ($(this).attr("value") == "")
-				$(this).attr("value", "Enter your name");
+			if ($(this).val() == "")
+				$(this).val("Enter your name");
 		});
 });
 </script>

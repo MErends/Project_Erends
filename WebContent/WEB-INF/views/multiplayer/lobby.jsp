@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Its the lobby yo!</title>
 </head>
 <body>
-
+<a href="multiplayer/logout">Click here to log out</a>
 </body>
 </html>
