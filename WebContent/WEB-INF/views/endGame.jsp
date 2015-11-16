@@ -12,7 +12,7 @@ ${tableString}
 <img src="images/Black.png"> ${blackScore} <br>
 <img src="images/White.png"> ${whiteScore} <br>
 ${message} <br>
-<form:form action="newGame">
+<form:form action="/Rerversi">
 	<input type="submit" value="New Game">
 </form:form>
 </body>

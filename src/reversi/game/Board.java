@@ -58,7 +58,10 @@ public class Board {
 	public int bestMove(Color turn) {
 		System.out.println("best move requested\n");
 		int[] corners = {0, 7, 56, 63};
-		int[] subcorners = {1, 6, 8, 9, 14, 15, 48, 49, 54, 55, 57, 62};
+		int[] topleft = {1, 8, 9};
+		int[] topright = {6, 14, 15};
+		int[] bottomleft = {48, 49, 57};
+		int[] bottomright = {54, 55, 62};
 		int bestScore = 0;
 		List<Integer> moves = new ArrayList<Integer>();
 		List<Integer> cornerMoves = new ArrayList<Integer>();
@@ -73,11 +76,25 @@ public class Board {
 					cornerMoves.add(position);
 					continue;
 				}
-				if (hasArrayGot(subcorners, position)) {
+				if (hasArrayGot(topleft, position) && stones.get(0).getColor() != turn) {
 					subcornerMoves.add(position);
 					continue;
 				}
 				
+				if (hasArrayGot(topright, position) && stones.get(7).getColor() != turn) {
+					subcornerMoves.add(position);
+					continue;
+				}
+				
+				if (hasArrayGot(bottomleft, position) && stones.get(56).getColor() != turn) {
+					subcornerMoves.add(position);
+					continue;
+				}
+				
+				if (hasArrayGot(bottomright, position) && stones.get(63).getColor() != turn) {
+					subcornerMoves.add(position);
+					continue;
+				}
 				if (score >= bestScore) {
 					if (score > bestScore)
 						moves = new ArrayList<Integer>();
@@ -90,19 +107,19 @@ public class Board {
 		if (cornerMoves.size() != 0) {
 			int index = random.nextInt(cornerMoves.size());
 			int move = cornerMoves.get(index);
-			System.out.println("returning corner move " + move);
 			return move;
 		}
 		if (moves.size() != 0) {
 			int index = random.nextInt(moves.size());
 			int move = moves.get(index);
-			System.out.println("returning move " + move);
 			return move;
 		}
-		int index = random.nextInt(subcornerMoves.size());
-		int move = subcornerMoves.get(index);
-		System.out.println("returning subcorner move " + move);
-		return move;
+		if (subcornerMoves.size() != 0) {
+			int index = random.nextInt(subcornerMoves.size());
+			int move = subcornerMoves.get(index);
+			return move;
+		}
+		return -1;
 	}
 
 	private boolean hasArrayGot(int[] arr, int value) {
