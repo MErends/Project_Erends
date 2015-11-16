@@ -46,6 +46,7 @@ public class MPBoard {
 		return id;
 	}
 	
+	@OneToMany(cascade = {CascadeType.ALL})
 	public List<String> getPlayers() {
 		return players;
 	}
