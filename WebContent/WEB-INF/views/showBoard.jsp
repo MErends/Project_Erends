@@ -5,17 +5,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+td.clickable {cursor: pointer}</style>
 <meta charset="UTF-8">
 <title>Current board</title>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
 $(document).ready(function() {
-	$('td.clickable').click(function() {
-		var id = this.getAttribute("id");
-		$('img.clickable').attr("src", "images/None.png");
-		$('img[id='+ id + ']').attr("src", "images/Click.png");
-		$('#submit').prop("disabled", false);
-	});
+	$('td.clickable')
+		.click(function() {
+			var id = this.getAttribute("id");
+			$('img.clickable').attr("src", "images/None.png");
+			$('img[id='+ id + ']').attr("src", "images/Click.png");
+			$('#placeID').attr("value", id)
+			$('#submit').prop("disabled", false);
+		})
+		.mouseover(function() {
+			var id = this.getAttribute("id");
+			$('img[id='+ id + ']').attr("src", "images/Click.png");
+		})
+		.mouseleave(function(){
+			var id = this.getAttribute("id");
+			var clicked = $('#placeID').attr("value");
+			if (clicked != id)
+				$('img[id='+ id + ']').attr("src", "images/None.png");
+		});
 });
 </script>
 <body>
@@ -24,12 +38,13 @@ Next turn:
 
 ${tableString}
 <form:form>
-<input type="hidden" name="placeID" value="">
 <c:choose>
 	<c:when test="${CPU}">
+	<input type="hidden" id="placeID" name="placeID" value="${bestMove}">
 	<input type="submit" id="submit" value="Make Move" name="makeMove">
 	</c:when>
 	<c:otherwise>
+	<input type="hidden" id="placeID" name="placeID" value="">
 	<input type="submit" id="submit" value="Make Move" name="makeMove" disabled="disabled">
 	</c:otherwise>
 </c:choose>

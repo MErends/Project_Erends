@@ -66,7 +66,7 @@ public class ReversiController {
 			return "index";
 
 		Color turn = board.getTurn();
-		// int bestMove = board.bestMove(turn);
+		int bestMove = board.bestMove(turn);
 		StringBuilder table = new StringBuilder();
 		boolean CPU = (boolean) session.getAttribute("CPU");
 		boolean CPUTurn = CPU && turn == Color.White;
@@ -82,10 +82,13 @@ public class ReversiController {
 				} else if (board.potentialScoreFor(x, y, turn) == 0 ) {
 					table.append("\t\t<td><img src=\"images/None.png\" ></td>\n");
 				} else {
-					table.append("\t\t<td id=\""+ (x * 8 + y) + "\" height=\"44\" class=\"clickable\"><img id=\""+ (x * 8 + y) + "\" src=\"images/None.png\" class=\"clickable\"></td>\n");
-					
-					//String checkdis = CPUTurn ? (bestMove == 8 * x + y ? "checked" : "disabled") : ""; 
-					//table.append("\t\t\t<input type=\"radio\" name=\"placeID\" value=\""+ (x * 8 + y) + "\" " + checkdis + ">\n");
+					if (!CPUTurn)
+						table.append("\t\t<td id=\""+ (x * 8 + y) + "\" height=\"44\" class=\"clickable\"><img id=\""+ (x * 8 + y) + "\" src=\"images/None.png\" class=\"clickable\"></td>\n");
+					else {
+						model.addAttribute("bestMove", bestMove);
+						String image = "images/" + ((bestMove == 8 * x + y) ? "Click" : "None") + ".png";
+						table.append("\t\t<td height=\"44\" ><img src=\"" + image +  "\"></td>\n");
+					}
 				}
 			}
 			table.append("\t</tr>\n");
