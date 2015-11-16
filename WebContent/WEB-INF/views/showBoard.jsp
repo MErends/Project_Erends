@@ -14,18 +14,18 @@ td.clickable {cursor: pointer}</style>
 $(document).ready(function() {
 	$('td.clickable')
 		.click(function() {
-			var id = this.getAttribute("id");
+			var id = $(this).attr("id");
 			$('img.clickable').attr("src", "images/None.png");
 			$('img[id='+ id + ']').attr("src", "images/Click.png");
 			$('#placeID').attr("value", id)
 			$('#submit').prop("disabled", false);
 		})
 		.mouseover(function() {
-			var id = this.getAttribute("id");
+			var id = $(this).attr("id");
 			$('img[id='+ id + ']').attr("src", "images/Click.png");
 		})
-		.mouseleave(function(){
-			var id = this.getAttribute("id");
+		.mouseout(function(){
+			var id = $(this).attr("id");
 			var clicked = $('#placeID').attr("value");
 			if (clicked != id)
 				$('img[id='+ id + ']').attr("src", "images/None.png");
@@ -38,14 +38,13 @@ Next turn:
 
 ${tableString}
 <form:form>
+<input type="hidden" id="placeID" name="placeID" value="${bestMove}">
 <c:choose>
 	<c:when test="${CPU}">
-	<input type="hidden" id="placeID" name="placeID" value="${bestMove}">
-	<input type="submit" id="submit" value="Make Move" name="makeMove">
+		<input type="submit" id="submit" value="Make Move" name="makeMove">
 	</c:when>
 	<c:otherwise>
-	<input type="hidden" id="placeID" name="placeID" value="">
-	<input type="submit" id="submit" value="Make Move" name="makeMove" disabled="disabled">
+		<input type="submit" id="submit" value="Make Move" name="makeMove" disabled="disabled">
 	</c:otherwise>
 </c:choose>
 <c:if test="${skippable}">
