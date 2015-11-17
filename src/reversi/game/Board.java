@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
+//@Entity
 public class Board {
 	
 	private long id;

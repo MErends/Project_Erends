@@ -11,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class MPBoard {
 	
 	private long id;
-	private List<String> players = new ArrayList<String>();
+	private List<Player> players = new ArrayList<Player>();
 	private List<Stone> stones = new ArrayList<Stone>();
 	private Color turn;
 	
@@ -25,9 +25,13 @@ public class MPBoard {
 		turn = Color.Black;
 	}
 
-	public Color addPlayer(String sessionID) {
-		players.add(sessionID);
-		return players.size() == 1 ? Color.Black : Color.White;
+	public Color addPlayer(String sessionID, String name) {
+		Player newPlayer = new Player();
+		newPlayer.setName(name);
+		newPlayer.setSessionID(sessionID);
+		newPlayer.setColor(players.size() == 1 ? Color.Black : Color.White);
+		players.add(newPlayer);
+		return newPlayer.getColor();
 	}
 	
 	public void addStone(int x, int y, Color color) {
@@ -47,7 +51,7 @@ public class MPBoard {
 	}
 	
 	@OneToMany(cascade = {CascadeType.ALL})
-	public List<String> getPlayers() {
+	public List<Player> getPlayers() {
 		return players;
 	}
 	
@@ -86,7 +90,7 @@ public class MPBoard {
 		this.id = id;
 	}
 
-	public void setPlayers(List<String> players) {
+	public void setPlayers(List<Player> players) {
 		this.players = players;
 	}
 

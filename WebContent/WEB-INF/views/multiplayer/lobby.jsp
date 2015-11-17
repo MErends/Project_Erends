@@ -7,6 +7,7 @@
 <title>Its the lobby yo!</title>
 </head>
 <body>
-<a href="multiplayer/logout">Click here to log out</a>
+<h1>Welcome ${sessionScope.name}!</h1>
+<a href="logout">Click here to log out</a>
 </body>
 </html>

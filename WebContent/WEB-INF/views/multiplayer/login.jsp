@@ -8,7 +8,6 @@
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
 $(document).ready(function(){
-	$
 	$('input.name')
 		.focus(function() {
 			if ($(this).val() == "Enter your name")
@@ -24,7 +23,7 @@ $(document).ready(function(){
 <body>
 <form:form>
 <input type="text" class="name" name="name" value="Enter your name">
-<input type="submit" value="Log in">
+<input type="submit" value="Log in" id="submit">
 </form:form>
 </body>
 </html>
