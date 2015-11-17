@@ -51,11 +51,16 @@ public abstract class MPBoardDAO {
 
 	}
 	
-	public static MPBoard getByID(String session) {
+	public static long addPlayerTo(MPBoard board, String name, String sessionID) {
+		
+	}
+	
+	
+	public static MPBoard getByPlayerID(long ID) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-		long boardID = ((BigInteger) em.createNativeQuery("SELECT MPBoard_id FROM mpboard_player WHERE players_sessionID ='" + session + "'").getSingleResult()).longValue();
+		long boardID = ((BigInteger) em.createNativeQuery("SELECT MPBoard_id FROM mpboard_player WHERE players_id ='" + ID + "'").getSingleResult()).longValue();
 		t.commit();
 		if(boardID == 0L) return null;
 		
