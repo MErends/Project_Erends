@@ -2,10 +2,14 @@ package reversi.game;
 
 
 
+import java.math.BigInteger;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+
 
 public abstract class MPBoardDAO {
 	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
@@ -34,7 +38,7 @@ public abstract class MPBoardDAO {
 	}
 	
 	
-	public static void remove(int boardID) {
+	public static void remove(Long boardID) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
@@ -51,10 +55,9 @@ public abstract class MPBoardDAO {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-		String boardID = (String) em.createQuery("SELECT MPBoard_id FROM mpboard_player WHERE players_sessionID =\"" + session + "\";").getSingleResult();
+		long boardID = ((BigInteger) em.createNativeQuery("SELECT MPBoard_id FROM mpboard_player WHERE players_sessionID ='" + session + "'").getSingleResult()).longValue();
 		t.commit();
-		em.close();
-		if(boardID == null) return null;
+		if(boardID == 0L) return null;
 		
 		t = em.getTransaction();
 		t.begin();
@@ -62,5 +65,22 @@ public abstract class MPBoardDAO {
 		t.commit();
 		em.close();
 		return board;
+	}
+	
+	public static List<MPBoard> all() {
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		List<MPBoard> boards = em.createQuery("from MPBoard", MPBoard.class).getResultList();
+		t.commit();
+		em.close();
+		return boards;
+	}
+	
+	public static void removeAll() {
+		List<MPBoard> boards = MPBoardDAO.all();
+		for(MPBoard board : boards) {
+			remove(board.getId());
+		}
 	}
 }

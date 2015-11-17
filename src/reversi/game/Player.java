@@ -2,12 +2,27 @@ package reversi.game;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 public class Player {
+	
+	private long id;
 	private String name;
 	private String sessionID;
 	private Color color;
 
+	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -15,7 +30,6 @@ public class Player {
 		this.name = name;
 	}
 	
-	@Id
 	public String getSessionID() {
 		return sessionID;
 	}

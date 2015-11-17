@@ -50,12 +50,12 @@ public class MPBoard {
 		return id;
 	}
 	
-	@OneToMany(cascade = {CascadeType.ALL})
+	@OneToMany(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
 	public List<Player> getPlayers() {
 		return players;
 	}
 	
-	@OneToMany(cascade = {CascadeType.ALL})
+	@OneToMany(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
 	public List<Stone> getStones() {
 		return stones;
 	}
@@ -113,8 +113,8 @@ public class MPBoard {
 		for(int x = 0; x != 8; ++x) {
 			output = output.concat("|       |       |       |       |       |       |       |       |\n");
 			for(int y = 0; y != 8; ++y) {
-				//output = output.concat("| " + stones.get(8 * x + y).getColor() + "\t");
-				output = output.concat("|" + (8 * x + y) + "\t");
+				output = output.concat("| " + stones.get(8 * x + y).getColor() + "\t");
+//				output = output.concat("|" + (8 * x + y) + "\t");
 			}
 			output = output.concat("|\n|       |       |       |       |       |       |       |       |\n");
 			output = output.concat("+-------+-------+-------+-------+-------+-------+-------+-------+\n");

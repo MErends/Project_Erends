@@ -3,8 +3,19 @@ package reversi.game;
 public class ReversiTester {
 
 	public static void main(String[] args) {
+		MPBoardDAO.removeAll();
+
+		
 		MPBoard board = MPBoardDAO.create();
-		System.out.println(board);
+		board.addPlayer("Player1SessionID", "Mark");
+		MPBoardDAO.update(board);
+		board = null;
+		MPBoard nieuwBord = MPBoardDAO.getByID("Player1SessionID");
+		nieuwBord.addPlayer("Player2SessionID", "Sjaak");
+		MPBoardDAO.update(nieuwBord);
+		nieuwBord = null;
+		MPBoard board2 = MPBoardDAO.getByID("Player1SessionID");
+		System.out.println(board2.getPlayers());
 		
 		
 		

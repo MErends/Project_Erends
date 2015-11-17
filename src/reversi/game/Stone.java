@@ -23,6 +23,10 @@ public class Stone {
 		this.id = id;
 	}
 
+	public Stone() {
+		
+	}
+	
 	public Stone(Color color) {
 			this.color = color;
 	}
