@@ -2,6 +2,7 @@
     <wb-module deploy-name="Reversi">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/META-INF"/>
         <property name="context-root" value="Reversi"/>
         <property name="java-output-path" value="/Reversi/build/classes"/>
     </wb-module>

@@ -10,14 +10,8 @@ import javax.persistence.Persistence;
 public abstract class MPBoardDAO {
 	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
 
-	public static MPBoard newBoard() {
+	public static MPBoard create() {
 		MPBoard board = new MPBoard();
-		board = updateBoard(board);
-		return board;
-
-	}
-	
-	public static MPBoard updateBoard(MPBoard board) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
@@ -28,7 +22,32 @@ public abstract class MPBoardDAO {
 
 	}
 	
-	public static MPBoard getBoardByID(String session) {
+	public static MPBoard update(MPBoard board) {
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		em.merge(board);
+		t.commit();
+		em.close();
+		return board;
+
+	}
+	
+	
+	public static void remove(int boardID) {
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		MPBoard board = em.find(MPBoard.class, boardID);
+		if(board != null){
+			em.remove( board );
+		}
+		t.commit();
+		em.close();
+
+	}
+	
+	public static MPBoard getByID(String session) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
@@ -45,10 +64,3 @@ public abstract class MPBoardDAO {
 		return board;
 	}
 }
-
-//EntityManager em = emf.createEntityManager();
-//EntityTransaction t = em.getTransaction();
-//t.begin();
-//em.persist(bord);
-//t.commit();
-//em.close();
