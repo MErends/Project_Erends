@@ -10,11 +10,11 @@ public class ReversiTester {
 		board.addPlayer("Player1SessionID", "Mark");
 		MPBoardDAO.update(board);
 		board = null;
-		MPBoard nieuwBord = MPBoardDAO.getByID("Player1SessionID");
+		MPBoard nieuwBord = MPBoardDAO.getByPlayerID("Player1SessionID");
 		nieuwBord.addPlayer("Player2SessionID", "Sjaak");
 		MPBoardDAO.update(nieuwBord);
 		nieuwBord = null;
-		MPBoard board2 = MPBoardDAO.getByID("Player1SessionID");
+		MPBoard board2 = MPBoardDAO.getByPlayerID("Player1SessionID");
 		System.out.println(board2.getPlayers());
 		
 		
