@@ -31,30 +31,6 @@ public class Board {
 		flipAll(x, y, color);
 	}
 	
-	public Color getColorAt(int x, int y) {
-		return stones.get(8 * x + y).getColor();
-	}
-	
-	@Id
-	@GeneratedValue(generator="increment")
-	@GenericGenerator(name="increment", strategy = "increment")
-	public long getId() {
-		return id;
-	}
-	
-	@OneToMany(cascade = {CascadeType.ALL})
-	public List<Stone> getStones() {
-		return stones;
-	}
-	
-	public void switchTurn() {
-		turn = turn == Color.Black ? Color.White : Color.Black; 
-	}
-
-	public Color getTurn() {
-		return turn;
-	}
-
 	public int bestMove(Color turn) {
 		int[] corners = {0, 7, 56, 63};
 		int[] topleft = {1, 8, 9};
@@ -120,14 +96,37 @@ public class Board {
 		}
 		return -1;
 	}
+	
+	public Color getColorAt(int x, int y) {
+		return stones.get(8 * x + y).getColor();
+	}
+	
+	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
+	public long getId() {
+		return id;
+	}
+	
+	@OneToMany(cascade = {CascadeType.ALL})
+	public List<Stone> getStones() {
+		return stones;
+	}
 
-	private boolean hasArrayGot(int[] arr, int value) {
-		int len = arr.length;
-		for (int x = 0; x != len; ++x) {
-			if (arr[x] == value)
-				return true;
-		}
-		return false;
+	public Color getTurn() {
+		return turn;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setStones(List<Stone> stones) {
+		this.stones = stones;
+	}
+
+	public void setTurn(Color turn) {
+		this.turn = turn;
 	}
 	
 	public boolean hasNoMoves(Color color) {
@@ -143,7 +142,7 @@ public class Board {
 	public boolean noMoreMoves() {
 		return (hasNoMoves(Color.Black) && hasNoMoves(Color.White));
 	}
-
+	
 	public int numStones(Color color) {
 		int num = 0;
 		for(Stone stone : stones)
@@ -168,21 +167,12 @@ public class Board {
 		return flippable.size();
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public void setStone(int x, int y, Color color) {
 		stones.get(8 * x + y).setColor(color);
 	}
 
-	
-	public void setStones(List<Stone> stones) {
-		this.stones = stones;
-	}
-
-	public void setTurn(Color turn) {
-		this.turn = turn;
+	public void switchTurn() {
+		turn = turn == Color.Black ? Color.White : Color.Black; 
 	}
 
 	@Override
@@ -199,7 +189,7 @@ public class Board {
 		}
 		return output;
 	}
-	
+
 	private void flipAll(int x, int y, Color color) {
 		flipN(x, y, color);
 		flipNE(x, y, color);
@@ -210,8 +200,7 @@ public class Board {
 		flipW(x, y, color);
 		flipNW(x, y, color);
 	}
-
-
+	
 	private void flipE(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(++y < 8) {
@@ -228,7 +217,8 @@ public class Board {
 		}
 		return;
 	}
-	
+
+
 	private void flipN(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(--x > -1) {
@@ -245,6 +235,7 @@ public class Board {
 		}
 		return;
 	}
+	
 	private void flipNE(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(--x > -1 && ++y < 8) {
@@ -277,7 +268,6 @@ public class Board {
 		}
 		return;
 	}
-
 	private void flipS(int x, int y, Color color) {
 		ArrayList<Stone> toFlip = new ArrayList<Stone>();
 		while(++x < 8) {
@@ -344,6 +334,15 @@ public class Board {
 			}	
 		}
 		return;
+	}
+
+	private boolean hasArrayGot(int[] arr, int value) {
+		int len = arr.length;
+		for (int x = 0; x != len; ++x) {
+			if (arr[x] == value)
+				return true;
+		}
+		return false;
 	}
 
 	private ArrayList<Stone> potentialE(int x, int y, Color color) {

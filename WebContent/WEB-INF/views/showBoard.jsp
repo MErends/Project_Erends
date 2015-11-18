@@ -5,10 +5,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style>
-td.clickable {cursor: pointer}</style>
+td.clickable {cursor: pointer}
+</style>
+
 <meta charset="UTF-8">
 <title>Current board</title>
+
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -32,24 +36,26 @@ $(document).ready(function() {
 		});
 });
 </script>
-<body>
-Next turn:
-	<img src="images/${sessionScope.board.getTurn()}.png"/>
 
-${tableString}
-<form:form>
-<input type="hidden" id="placeID" name="placeID" value="${bestMove}">
-<c:choose>
-	<c:when test="${CPU}">
-		<input type="submit" id="submit" value="Make Move" name="makeMove">
-	</c:when>
-	<c:otherwise>
-		<input type="submit" id="submit" value="Make Move" name="makeMove" disabled="disabled">
-	</c:otherwise>
-</c:choose>
-<c:if test="${skippable}">
-	<input type="submit" value="Skip Turn" name="skipTurn" />
-</c:if>
-</form:form>
+<body>
+	Next turn:
+	<img src="images/${sessionScope.board.getTurn()}.png"/>
+	${tableString}
+	<form:form>
+		<input type="hidden" id="placeID" name="placeID" value="${bestMove}">
+		<c:choose>
+			<c:when test="${CPU}">
+				<input type="submit" id="submit" value="Make Move" name="makeMove">
+			</c:when>
+			<c:otherwise>
+				<input type="submit" id="submit" value="Make Move" name="makeMove" disabled="disabled">
+			</c:otherwise>
+		</c:choose>
+		<c:if test="${skippable}">
+			<input type="submit" value="Skip Turn" name="skipTurn" />
+		</c:if>
+	</form:form>
 </body>
+
+
 </html>

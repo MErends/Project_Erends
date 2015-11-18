@@ -15,6 +15,7 @@ public abstract class MPBoardDAO {
 	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
 
 	public static MPBoard create() {
+		
 		MPBoard board = new MPBoard();
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -84,3 +85,5 @@ public abstract class MPBoardDAO {
 		}
 	}
 }
+
+
