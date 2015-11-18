@@ -51,11 +51,6 @@ public abstract class MPBoardDAO {
 
 	}
 	
-	public static long addPlayerTo(MPBoard board, String name, String sessionID) {
-		
-	}
-	
-	
 	public static MPBoard getByPlayerID(long ID) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
