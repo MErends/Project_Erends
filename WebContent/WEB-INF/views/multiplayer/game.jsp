@@ -17,15 +17,6 @@ td.clickable {cursor: pointer}
 <script>
 var playerColor = "${playerColor}";
 
-function getTurn() {
-	console.log("getting Turn");
-	$.get("/Reversi/api/turn/${boardID}", function(data) {
-		if (data == playerColor) {
-			location.reload(true);
-		}
-	});
-}
-
 $(document).ready(function() {
 	$('td.clickable')
 		.click(function() {
@@ -49,6 +40,16 @@ $(document).ready(function() {
 	setInterval(getTurn, 2000);
 	}
 });
+
+function getTurn() {
+	console.log("getting Turn");
+	$.get("/Reversi/api/turn/${boardID}", function(data) {
+		if (data == playerColor) {
+			location.reload(true);
+		}
+	});
+}
+
 </script>
 
 <body>
