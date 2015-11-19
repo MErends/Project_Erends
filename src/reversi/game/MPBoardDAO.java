@@ -40,7 +40,7 @@ public abstract class MPBoardDAO {
 	}
 	
 	
-	public static void remove(Long boardID) {
+	public static void remove(long boardID) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();

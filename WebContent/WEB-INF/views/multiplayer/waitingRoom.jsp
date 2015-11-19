@@ -27,5 +27,6 @@ $(document).ready(function() {
 </head>
 <body>
 You are now in the waiting room. Please wait until an opponent appears! This page will refresh automatically. Eventually...
+<br><a href="<c:url value="/multiplayer/lobby" />">Back to lobby</a>
 </body>
 </html>

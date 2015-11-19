@@ -46,6 +46,10 @@ public class MultiController {
 		if (name == null || name == "")
 			return "/multiplayer/login";
 	
+		Player player = (Player) session.getAttribute("player");
+		if (player != null && waitingPlayer != null && player.getId() == waitingPlayer.getId())
+				waitingPlayer = null;
+		
 		return "/multiplayer/lobby";
 	} 	
 	
@@ -71,6 +75,10 @@ public class MultiController {
 	@RequestMapping("/waitingRoom")
 	public String waiting(HttpSession session, Model model) {
 		Player player = (Player) session.getAttribute("player");
+		if (player == null) {
+			session.invalidate();
+			return "redirect:/multiplayer/login";
+		}
 		model.addAttribute("playerID", player.getId());
 		return "/multiplayer/waitingRoom";
 	}
@@ -89,8 +97,9 @@ public class MultiController {
 			table.append("\t<tr>\n");
 			for (int y = 0; y != 8; ++y) {
 				Color color = board.getColorAt(x, y);
+				String last = board.getLastPosition() == (8 * x + y) ? "Last" : "";
 				if (color != Color.None) {
-					table.append("\t\t<td><img src=\"/Reversi/images/" + color + ".png\" ></td>\n");
+					table.append("\t\t<td><img src=\"/Reversi/images/" + last + color + ".png\" ></td>\n");
 				} else {
 					if (player.getColor() == turn && board.validMove(x, y, turn) ) {
 						table.append("\t\t<td id=\""+ (x * 8 + y) + "\" class=\"clickable\"><img id=\""+ (x * 8 + y) + "\" src=\"/Reversi/images/None.png\" class=\"clickable\"></td>\n");
@@ -133,6 +142,7 @@ public class MultiController {
 		Color turn = board.getTurn();
 		
 		if (skipTurn != null) {
+			board.setLastPosition(-1);
 			board.switchTurn();
 			MPBoardDAO.update(board);
 			return "redirect:/game";
@@ -151,8 +161,13 @@ public class MultiController {
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		Player player = (Player) session.getAttribute("player");
-		if (player != null)
+		if (player != null) {
+			MPBoard board = MPBoardDAO.getByPlayerID(player.getId());
+			if (board != null)
+				MPBoardDAO.remove(board.getId());
 			PlayerDAO.remove(player.getId());
+		}
+			
 		session.invalidate();
 		return "redirect:/multiplayer/";
 	}

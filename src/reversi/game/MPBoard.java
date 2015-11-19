@@ -11,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class MPBoard {
 	
 	private long id;
-	private int lastX, lastY;
+	private int lastPosition = -1;
 	private List<Player> players = new ArrayList<Player>();
 	private List<Stone> stones = new ArrayList<Stone>();
 	private Color turn;
@@ -33,8 +33,7 @@ public class MPBoard {
 	}
 	
 	public void addStone(int x, int y, Color color) {
-		lastX = x;
-		lastY = y;
+		lastPosition = 8 * x + y;
 		stones.get(8 * x + y).setColor(color);
 		flipAll(x, y, color);
 	}
@@ -50,12 +49,8 @@ public class MPBoard {
 		return id;
 	}
 	
-	public int getLastX() {
-		return lastX;
-	}
-
-	public int getLastY() {
-		return lastY;
+	public int getLastPosition() {
+		return lastPosition;
 	}
 
 	@OneToMany(cascade = {CascadeType.MERGE}, fetch=FetchType.EAGER)
@@ -98,12 +93,8 @@ public class MPBoard {
 		this.id = id;
 	}
 
-	public void setLastX(int lastX) {
-		this.lastX = lastX;
-	}
-
-	public void setLastY(int lastY) {
-		this.lastY = lastY;
+	public void setLastPosition(int lastPosition) {
+		this.lastPosition = lastPosition;
 	}
 
 	public void setPlayers(List<Player> players) {
