@@ -301,7 +301,7 @@ public class MPBoard {
 	
 	private boolean validToN(int x, int y, Color turn) {
 		boolean streak = false;
-		while(--x > 0) {
+		while(--x > -1) {
 			Color position = stones.get(8 * x + y).getColor();
 			if (position == Color.None)
 				return false;
@@ -316,7 +316,7 @@ public class MPBoard {
 	
 	private boolean validToNE(int x, int y, Color turn) {
 		boolean streak = false;
-		while(--x > 0 && ++y < 8) {
+		while(--x > -1 && ++y < 8) {
 			Color position = stones.get(8 * x + y).getColor();
 			if (position == Color.None)
 				return false;
@@ -331,7 +331,7 @@ public class MPBoard {
 	
 	private boolean validToNW(int x, int y, Color turn) {
 		boolean streak = false;
-		while(--y > 0 && --x > 0) {
+		while(--y > -1 && --x > -1) {
 			Color position = stones.get(8 * x + y).getColor();
 			if (position == Color.None)
 				return false;
@@ -376,7 +376,7 @@ public class MPBoard {
 	
 	private boolean validToSW(int x, int y, Color turn) {
 		boolean streak = false;
-		while(--x > 0 && ++y < 8) {
+		while(--y > -1 && ++x < 8) {
 			Color position = stones.get(8 * x + y).getColor();
 			if (position == Color.None)
 				return false;
@@ -391,7 +391,7 @@ public class MPBoard {
 	
 	private boolean validToW(int x, int y, Color turn) {
 		boolean streak = false;
-		while(--y > 0) {
+		while(--y > -1) {
 			Color position = stones.get(8 * x + y).getColor();
 			if (position == Color.None)
 				return false;
