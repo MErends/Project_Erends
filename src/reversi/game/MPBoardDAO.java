@@ -14,9 +14,10 @@ import javax.persistence.Persistence;
 public abstract class MPBoardDAO {
 	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("reversi");
 
-	public static MPBoard create() {
-		
+	public static MPBoard create(Player p1, Player p2) {
 		MPBoard board = new MPBoard();
+		board.addPlayer(p1);
+		board.addPlayer(p2);
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();

@@ -25,13 +25,10 @@ public class MPBoard {
 		turn = Color.Black;
 	}
 
-	public Color addPlayer(String sessionID, String name) {
-		Player newPlayer = new Player();
-		newPlayer.setName(name);
-		newPlayer.setSessionID(sessionID);
-		newPlayer.setColor(players.size() == 1 ? Color.Black : Color.White);
-		players.add(newPlayer);
-		return newPlayer.getColor();
+	public Color addPlayer(Player player) {
+		player.setColor(players.size() == 1 ? Color.Black : Color.White);
+		players.add(player);
+		return player.getColor();
 	}
 	
 	public void addStone(int x, int y, Color color) {
@@ -50,7 +47,7 @@ public class MPBoard {
 		return id;
 	}
 	
-	@OneToMany(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
+	@OneToMany(cascade = {CascadeType.MERGE}, fetch=FetchType.EAGER)
 	public List<Player> getPlayers() {
 		return players;
 	}

@@ -8,6 +8,7 @@
 </head>
 <body>
 <h1>Welcome ${sessionScope.name}!</h1>
+<a href="findOpponent">Click here to find an opponent</a><br>
 <a href="logout">Click here to log out</a>
 </body>
 </html>

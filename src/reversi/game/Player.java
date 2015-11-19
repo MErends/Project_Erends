@@ -9,7 +9,6 @@ public class Player {
 	
 	private long id;
 	private String name;
-	private String sessionID;
 	private Color color;
 
 	@Id
@@ -30,12 +29,6 @@ public class Player {
 		this.name = name;
 	}
 	
-	public String getSessionID() {
-		return sessionID;
-	}
-	public void setSessionID(String sessionID) {
-		this.sessionID = sessionID;
-	}
 	public Color getColor() {
 		return color;
 	}
