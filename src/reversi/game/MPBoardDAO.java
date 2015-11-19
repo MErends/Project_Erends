@@ -52,6 +52,15 @@ public abstract class MPBoardDAO {
 		em.close();
 
 	}
+	public static MPBoard getByID(long ID) {
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		MPBoard board = em.find(MPBoard.class, ID);
+		t.commit();
+		em.close();
+		return board;
+	}
 	
 	public static MPBoard getByPlayerID(long ID) {
 		EntityManager em = emf.createEntityManager();

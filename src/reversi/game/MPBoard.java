@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class MPBoard {
 	
 	private long id;
+	private int lastX, lastY;
 	private List<Player> players = new ArrayList<Player>();
 	private List<Stone> stones = new ArrayList<Stone>();
 	private Color turn;
@@ -32,6 +33,8 @@ public class MPBoard {
 	}
 	
 	public void addStone(int x, int y, Color color) {
+		lastX = x;
+		lastY = y;
 		stones.get(8 * x + y).setColor(color);
 		flipAll(x, y, color);
 	}
@@ -47,6 +50,14 @@ public class MPBoard {
 		return id;
 	}
 	
+	public int getLastX() {
+		return lastX;
+	}
+
+	public int getLastY() {
+		return lastY;
+	}
+
 	@OneToMany(cascade = {CascadeType.MERGE}, fetch=FetchType.EAGER)
 	public List<Player> getPlayers() {
 		return players;
@@ -87,10 +98,17 @@ public class MPBoard {
 		this.id = id;
 	}
 
+	public void setLastX(int lastX) {
+		this.lastX = lastX;
+	}
+
+	public void setLastY(int lastY) {
+		this.lastY = lastY;
+	}
+
 	public void setPlayers(List<Player> players) {
 		this.players = players;
 	}
-
 	
 	public void setStones(List<Stone> stones) {
 		this.stones = stones;
@@ -110,6 +128,7 @@ public class MPBoard {
 		for(int x = 0; x != 8; ++x) {
 			output = output.concat("|       |       |       |       |       |       |       |       |\n");
 			for(int y = 0; y != 8; ++y) {
+//				output = output.concat("| " + validMove(x, y, Color.White) + "\t");
 				output = output.concat("| " + stones.get(8 * x + y).getColor() + "\t");
 //				output = output.concat("|" + (8 * x + y) + "\t");
 			}
@@ -122,14 +141,9 @@ public class MPBoard {
 	public boolean validMove(int x, int y, Color color) {
 		if(stones.get(8 * x + y).getColor() != Color.None)
 			return false;
-		return validToN(x, y, color) ||
-				validToNE(x, y, color) ||
-				validToE(x, y, color) ||
-				validToSE(x, y, color) ||
-				validToS(x, y, color) ||
-				validToSW(x, y, color) ||
-				validToW(x, y, color) ||
-				validToNW(x, y, color);
+		
+		return validToN(x, y, color) || validToNE(x, y, color) || validToE(x, y, color) || validToSE(x, y, color) ||
+				validToS(x, y, color) || validToSW(x, y, color) || validToW(x, y, color) || validToNW(x, y, color);
 		}
 
 	private void flipAll(int x, int y, Color color) {
@@ -341,7 +355,7 @@ public class MPBoard {
 	
 	private boolean validToS(int x, int y, Color turn) {
 		boolean streak = false;
-		while(++y < 8) {
+		while(++x < 8) {
 			Color position = stones.get(8 * x + y).getColor();
 			if (position == Color.None)
 				return false;

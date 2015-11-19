@@ -5,7 +5,7 @@ public class ReversiTester {
 	public static void main(String[] args) {
 		MPBoardDAO.removeAll();
 		PlayerDAO.removeAll();
-		
+
 //		MPBoard board = MPBoardDAO.create();
 //		board.addPlayer("Player1SessionID", "Mark");
 //		MPBoardDAO.update(board);
