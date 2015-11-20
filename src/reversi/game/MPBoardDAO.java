@@ -27,7 +27,6 @@ public abstract class MPBoardDAO {
 		return board;
 
 	}
-	
 	public static MPBoard update(MPBoard board) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -38,8 +37,6 @@ public abstract class MPBoardDAO {
 		return board;
 
 	}
-	
-	
 	public static void remove(long boardID) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -61,7 +58,6 @@ public abstract class MPBoardDAO {
 		em.close();
 		return board;
 	}
-	
 	public static MPBoard getByPlayerID(long ID) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -77,7 +73,6 @@ public abstract class MPBoardDAO {
 		em.close();
 		return board;
 	}
-	
 	public static List<MPBoard> all() {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -87,7 +82,6 @@ public abstract class MPBoardDAO {
 		em.close();
 		return boards;
 	}
-	
 	public static void removeAll() {
 		List<MPBoard> boards = MPBoardDAO.all();
 		for(MPBoard board : boards) {
